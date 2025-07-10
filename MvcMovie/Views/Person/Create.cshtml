@@ -1,0 +1,23 @@
+@model MvcMovie.Model.Person
+
+@{
+    ViewData["Title"] = "Create Person";
+}
+
+<h2>Create Person</h2>
+
+<form asp-action="Create">
+    <div>
+        <label>PersonID</label>
+        <input asp-for="PersonId" readonly />
+    </div>
+    <div>
+        <label>Họ tên</label>
+        <input asp-for="FullName" />
+    </div>
+    <div>
+        <label>Địa chỉ</label>
+        <input asp-for="Address" />
+    </div>
+    <button type="submit">Lưu</button>
+</form>

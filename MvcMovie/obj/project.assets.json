@@ -8012,11 +8012,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\PTPMQL\\MvcMovie\\MvcMovie.csproj",
+      "projectUniqueName": "D:\\PTPMQL-2425-Ky3\\MvcMovie\\MvcMovie.csproj",
       "projectName": "MvcMovie",
-      "projectPath": "D:\\PTPMQL\\MvcMovie\\MvcMovie.csproj",
+      "projectPath": "D:\\PTPMQL-2425-Ky3\\MvcMovie\\MvcMovie.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\PTPMQL\\MvcMovie\\obj\\",
+      "outputPath": "D:\\PTPMQL-2425-Ky3\\MvcMovie\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
