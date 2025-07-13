@@ -11,5 +11,6 @@ namespace MvcMovie.Data
         }
 
         public DbSet<Person> Persons { get; set; }
+        public DbSet<MvcMovie.Model.Daily> Daily { get; set; } = default!;
     }
 }
