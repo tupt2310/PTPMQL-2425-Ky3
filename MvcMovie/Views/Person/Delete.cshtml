@@ -1,0 +1,23 @@
+@model MvcMovie.Model.Person
+
+@{
+    ViewData["Title"] = "Delete Person";
+}
+
+<h2>Xóa Person</h2>
+<h3>Bạn có chắc muốn xóa?</h3>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">PersonId</dt>
+        <dd class="col-sm-10">@Model.PersonId</dd>
+        <dt class="col-sm-2">Họ tên</dt>
+        <dd class="col-sm-10">@Model.FullName</dd>
+        <dt class="col-sm-2">Địa chỉ</dt>
+        <dd class="col-sm-10">@Model.Address</dd>
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="PersonId" />
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
