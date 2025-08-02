@@ -1,0 +1,72 @@
+@model Project.Models.ProductVM
+
+<h2 class="text-center">Thêm sản phẩm</h2>
+
+<div class="container mt-4">
+    <form asp-action="Create" asp-controller="Product" enctype="multipart/form-data" class="needs-validation"
+        novalidate>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label fw-bold"></label>
+            <input asp-for="Name" class="form-control" />
+            <div class="text-danger">
+                <span asp-validation-for="Name"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label fw-bold"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Images" class="form-label fw-bold">Chọn ảnh (tối thiểu 1, tối đa 5)</label>
+            <input asp-for="Images" type="file" class="form-control" multiple />
+            <div class="text-danger">
+                <span asp-validation-for="Images"></span>
+            </div>
+            <small class="form-text text-muted">Chọn từ 1 đến 5 ảnh để tải lên.</small>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary px-4">Thêm sản phẩm</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    function previewImages(event) {
+        const files = event.target.files;
+        const previewContainer = document.getElementById('previewContainer');
+        previewContainer.innerHTML = ''; // Xóa các ảnh cũ
+
+        if (files.length > 5) {
+            alert("Chỉ được upload tối đa 5 ảnh.");
+            event.target.value = ""; // Reset input file
+            return;
+        }
+
+        Array.from(files).forEach(file => {
+            if (file && file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imgElement = document.createElement("img");
+                    imgElement.src = e.target.result;
+                    imgElement.style.width = "100px";
+                    imgElement.style.height = "100px";
+                    imgElement.style.objectFit = "cover";
+                    imgElement.classList.add("m-1", "border");
+                    previewContainer.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Chỉ được upload các file ảnh.");
+                event.target.value = ""; // Reset input file
+            }
+        });
+    }
+</script>

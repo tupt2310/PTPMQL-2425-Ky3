@@ -1,0 +1,63 @@
+@model IEnumerable<Project.Models.Product>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+}
+
+<h2>Danh sách sản phẩm</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Tên sản phẩm</th>
+            <th>Mô tả</th>
+            <th>Ảnh</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            int index = 1;
+            foreach (var product in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>
+                        @if (product.Images != null && product.Images.Any())
+                        {
+                            <div style="display: flex; gap: 10px;">
+                                @foreach (var image in product.Images)
+                                {
+                                    <img src="@Url.Content($"~/uploads/{image.ImagePath}")" alt="@product.Name" width="100" />
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <span>Không có ảnh</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Product", new { id = product.ProductId })"
+                            class="btn btn-warning btn-sm">Chỉnh sửa</a>
+                        <a href="@Url.Action("Delete", "Product", new { id = product.ProductId })" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">Xóa</a>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">Không có sản phẩm nào</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "Product")" class="btn btn-primary">Thêm sản phẩm mới</a>
