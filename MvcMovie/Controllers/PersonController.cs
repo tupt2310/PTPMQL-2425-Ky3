@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MvcMovie.Data;
 using MvcMovie.Model;
 using MvcMovie.Models.Process;
-using Microsoft.AspNetCore.Http;
-using System.IO;
 
 namespace MvcMovie.Controllers
 {
     public class PersonController : Controller
     {
         private readonly Data.ApplicationDbContext _context;
-        private ExcelProcess _excelProcess= new ExcelProcess();
+        
+        private ExcelProcess _excelProcess = new ExcelProcess();
 
         public PersonController(Data.ApplicationDbContext context)
         {
@@ -59,31 +60,28 @@ namespace MvcMovie.Controllers
             ViewBag.infoPerson = strOutput;
             return View();
         }
-        public IActionResult Upload()
+
+
+        public async Task<IActionResult> Upload(IFormFile file)
         {
-            return View();
-        }
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-public async Task<IActionResult> Upload(IFormFile file)
-{
-    if (file != null)
-    {
-        string fileExtension = Path.GetExtension(file.FileName);
-        if (fileExtension != ".xls" && fileExtension != ".xlsx")
-        {
-            ModelState.AddModelError("", "Please choose excel file to upload!");
-        }
-        else
-        {
-            //rename file when upload to server
-            var fileName = DateTime.Now.ToShortTimeString().Replace(":", "") + fileExtension;
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Excels", fileName);
-            var fileLocation = new FileInfo(filePath).ToString();
+            if (file != null)
+            {
+                string fileExtension = Path.GetExtension(file.FileName);
+                if (fileExtension != ".xls" && fileExtension != ".xlsx")
+                {
+                    ModelState.AddModelError("", "Please choose excel file to upload!");
+                }
+                else
+                {
+                    //rename file when upload to server
+                    var fileName = DateTime.Now.ToShortTimeString().Replace(":", "") + fileExtension;
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Excels", fileName);
+                    var fileLocation = new FileInfo(filePath).ToString();
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         //save file to server
                         await file.CopyToAsync(stream);
+                        
                         //read data from excel file fill DataTable
                         var dt = _excelProcess.ExcelToDataTable(fileLocation);
                         //using for loop to read data from dt
@@ -98,13 +96,14 @@ public async Task<IActionResult> Upload(IFormFile file)
                             _context.Persons.Add(person);
                         }
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index)); 
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
             }
+            return View();
         }
-    }
-    return View();
-}
 
+        
     }
 }
 
